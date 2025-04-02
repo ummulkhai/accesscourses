@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Access | MentorBox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #203354;
+            --secondary: #37517e;
+            --accent: #4e8098;
+            --accent-light: #6e9fb5;
+            --text: #ffffff;
+            --success: #66bb6a;
+            --danger: #e57373;
+            --card-bg: rgba(255, 255, 255, 0.15);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text);
+        }
+        
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: -2;
+        }
+        
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 1%, transparent 3%),
+                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 1%, transparent 3%);
+            background-size: 80px 80px;
+            opacity: 0.5;
+            z-index: -1;
+        }
+        
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px;
+            width: 380px;
+            max-width: 90%;
+            text-align: center;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent), var(--accent-light));
+            border-radius: 3px;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .logo img {
+            max-width: 150px;
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+        
+        h1 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+        
+        .intro-text {
+            margin-bottom: 25px;
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(78, 128, 152, 0.2);
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        button {
+            width: 100%;
+            background: linear-gradient(45deg, var(--accent), var(--accent-light));
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #message {
+            color: var(--danger);
+            padding: 10px;
+            margin-top: 15px;
+            font-weight: 500;
+            display: none;
+            border-radius: 10px;
+            background-color: rgba(229, 115, 115, 0.1);
+        }
+        
+        #message.success {
+            color: var(--success);
+            background-color: rgba(102, 187, 106, 0.1);
+        }
+        
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0 5px;
+        }
+        
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            padding: 10px;
+            width: 33%;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            color: var(--accent-light);
+        }
+        
+        .feature:hover .feature-icon {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature i {
+            font-size: 20px;
+        }
+        
+        .tagline-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 5px 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tagline-badge i {
+            margin-right: 5px;
+            color: var(--accent-light);
+        }
+        
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+        
+        .footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: var(--text);
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <div class="tagline-badge">
+            <i class="fas fa-star"></i>
+            <span>#ruangmeraihcita</span>
+        </div>
+        
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/ummulkhai/notion-course-access/main/1741066112.png" alt="MentorBox Logo" 
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0ZXh0IHg9IjEwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE4IiBmaWxsPSJ3aGl0ZSI+TWVudG9yQm94PC90ZXh0Pjwvc3ZnPg==';">
+        </div>
+        
+        <h1>Akses Course</h1>
+        <p class="intro-text">Silakan masukkan password untuk melanjutkan ke materi pembelajaran Anda</p>
+        
+        <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Masukkan password course" autocomplete="off" />
+        </div>
+        
+        <button id="access-btn" onclick="checkAccess()">
+            <i class="fas fa-arrow-right"></i> Akses Course
+        </button>
+        
+        <div id="message"></div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <span>Materi Lengkap</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <span>Recording Sesi</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <span>Sertifikat</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Powered by <a href="https://mentorbox.id" target="_blank">MentorBox</a></p>
+    </div>
+
+    <script>
+        // Pastikan Font Awesome sudah dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Periksa apakah icon font dimuat dengan benar
+            const testIcon = document.querySelector('.feature-icon i');
+            if (testIcon && window.getComputedStyle(testIcon, ':before').content === 'none') {
+                // Jika font awesome gagal dimuat, gunakan ikon fallback
+                document.querySelectorAll('.feature-icon').forEach(function(icon) {
+                    icon.innerHTML = '★';
+                });
+            }
+        });
+    
+        // Simpan data password dan URL course
+        const courses = {
+            "hduuw7yvL": "https://lofty-hiss-79b.notion.site/Digital-Marketing-1c95b708a3108060a044e65ee1c6af2d?pvs=4",
+            "POSJ5hdwk": "https://lofty-hiss-79b.notion.site/Content-Creator-1c95b708a3108069a4fbd58c0e6f767a?pvs=4"
+        };
+        
+        // Tambahkan event listener untuk tombol Enter
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkAccess();
+            }
+        });
+        
+        // Fungsi untuk mengecek password
+        function checkAccess() {
+            const password = document.getElementById("password").value;
+            const messageEl = document.getElementById("message");
+            const button = document.getElementById("access-btn");
+            const formGroup = document.querySelector('.form-group');
+            
+            // Reset
+            messageEl.className = "";
+            messageEl.style.display = "none";
+            formGroup.classList.remove("shake");
+            
+            // Validasi input kosong
+            if (!password) {
+                messageEl.textContent = "Silakan masukkan password terlebih dahulu";
+                messageEl.style.display = "block";
+                return;
+            }
+            
+            // Tampilkan loading
+            const originalButtonText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Memproses...';
+            button.disabled = true;
+            
+            // Cek password (langsung tanpa setTimeout)
+            if (courses[password]) {
+                // Password benar
+                messageEl.textContent = "Password benar! Mengalihkan ke course...";
+                messageEl.classList.add("success");
+                messageEl.style.display = "block";
+                
+                // Redirect ke URL yang sesuai (tanpa delay)
+                window.location.href = courses[password];
+            } else {
+                // Password salah
+                messageEl.textContent = "Password salah. Silakan coba lagi.";
+                messageEl.style.display = "block";
+                button.innerHTML = originalButtonText;
+                button.disabled = false;
+                
+                // Efek getar
+                formGroup.classList.add("shake");
+            }
+        }
+    </script>
+</body>
+</html>
